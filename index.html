@@ -108,11 +108,6 @@
 
     <div class="divider"></div>
 
-    <!-- Fallback contact options (no third parties beyond email) -->
-    <div class="center">
-      <button type="button" class="button" id="fallbackBtn">Contact us directly</button>
-    </div>
-
 
     <p class="note" style="margin-top:12px">
       Brief privacy notice: submissions are used to respond to your inquiry and are not shared or sold. We do not run analytics on this page.
@@ -240,11 +235,6 @@
         copyMsgBtn.textContent = 'Copy failed';
         setTimeout(() => copyMsgBtn.textContent = 'Copy message', 1800);
       }
-    });
-    
-    // fallback contact button: opens Formspree or shows a short message instead of revealing email
-    document.getElementById('fallbackBtn').addEventListener('click', () => {
-       alert("Use the form above to reach Velesari Holdings directly. All messages are delivered privately.");
     });
 
   </script>
