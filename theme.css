@@ -313,3 +313,16 @@ button[disabled]{ opacity:.6; cursor:not-allowed; box-shadow:none; filter:none; 
   .wrap{ border:none; box-shadow:none; }
   .ok, .err{ display:none !important; }
 }
+
+@media (max-width:480px){
+  .h-captcha { transform: scale(0.88); }
+}
+
+/* Center and space hCaptcha neatly */
+.h-captcha {
+  margin: 0 auto var(--space-2);
+  display: flex;
+  justify-content: center;
+  transform: scale(0.95);
+  transform-origin: center;
+}
