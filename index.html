@@ -17,13 +17,14 @@
   <meta name="twitter:card" content="summary">
 
   <!-- Tight CSP: allow only inline CSS/JS and Formspree -->
-<meta http-equiv="Content-Security-Policy"
+  <meta http-equiv="Content-Security-Policy"
   content="default-src 'none';
            style-src 'self' 'unsafe-inline';
            img-src 'self' data:;
+           script-src 'self' 'unsafe-inline' https://js.hcaptcha.com;
+           frame-src https://hcaptcha.com https://*.hcaptcha.com;
            form-action https://formspree.io;
            connect-src https://formspree.io;
-           script-src 'unsafe-inline';
            base-uri 'none';
            frame-ancestors 'none'">
 
