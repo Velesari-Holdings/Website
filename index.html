@@ -4,74 +4,224 @@
   <meta charset="utf-8">
   <title>Inquire - Velesari Holdings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Simple, private way to contact YOUR NAME.">
+  <meta name="description" content="Direct, private contact with Velesari Holdings. No accounts, no tracking, one secure channel: email.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index,follow">
+
+  <!-- Clean previews without extra files -->
+  <meta property="og:title" content="Inquire — Velesari Holdings">
+  <meta property="og:description" content="Direct, private contact with Velesari Holdings.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://YOURUSERNAME.github.io/">
+  <meta name="twitter:card" content="summary">
+
+  <!-- Tight CSP: no external requests, no inline navigation except mailto -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; form-action 'self'; connect-src 'none'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'">
+
   <style>
-    :root { --bg:#0b0b0b; --fg:#f5f5f5; --muted:#bdbdbd; --card:#141414; }
-    html,body{height:100%} body{
+    :root{
+      --bg:#0b0b0b; --fg:#f5f5f5; --muted:#bdbdbd; --card:#141414; --border:#2a2a2a;
+      --btn:#0f0f0f; --ring:#00A86B; /* jade accent */
+      --ok-bg:#0f1f12; --ok-bd:#214d2b; --ok-fg:#cde7d0;
+      --er-bg:#1f1111; --er-bd:#4d2121; --er-fg:#f0caca;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#fafafa; --fg:#0a0a0a; --muted:#5a5a5a; --card:#ffffff; --border:#e6e6e6; --btn:#f4f4f4; }
+    }
+    html,body{height:100%}
+    body{
       margin:0; font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       background:var(--bg); color:var(--fg); display:grid; place-items:center; padding:24px;
     }
-    .wrap{width:100%; max-width:560px; background:var(--card); padding:28px; border-radius:16px}
+    .wrap{width:100%; max-width:560px; background:var(--card); padding:28px; border-radius:16px; border:1px solid var(--border)}
     h1{margin:0 0 8px; font-size:28px}
     p{margin:0 0 16px; color:var(--muted)}
     form{display:grid; gap:12px; margin-top:8px}
+    label{position:relative; width:1px; height:1px; clip:rect(1px,1px,1px,1px); white-space:nowrap; overflow:hidden}
     input,textarea,button{
-      width:100%; padding:12px 14px; border-radius:10px; border:1px solid #2a2a2a; background:#0f0f0f; color:var(--fg);
+      width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--btn); color:var(--fg);
+    }
+    input:focus-visible, textarea:focus-visible, button:focus-visible, a.button:focus-visible{
+      outline:2px solid var(--ring); outline-offset:2px;
     }
     textarea{min-height:120px; resize:vertical}
-    button{cursor:pointer; border-color:#2f2f2f}
+    button{cursor:pointer}
+    button:hover{box-shadow:0 0 0 2px var(--ring) inset}
     .row{display:flex; gap:12px} .row > *{flex:1}
-    .note{font-size:13px; color:#9a9a9a}
-    .ok{background:#0f1f12; border-color:#214d2b; color:#cde7d0; padding:12px 14px; border-radius:10px; display:none; margin-top:12px}
-    .err{background:#1f1111; border-color:#4d2121; color:#f0caca; padding:12px 14px; border-radius:10px; display:none; margin-top:12px}
-    .divider{height:1px; background:#222; margin:16px 0}
-    .center{display:flex; gap:12px; justify-content:center}
-    a.button{display:inline-block; text-decoration:none; padding:12px 14px; border-radius:10px; border:1px solid #2f2f2f; background:#0f0f0f; color:var(--fg)}
+    .note{font-size:13px; color:var(--muted)}
+    .ok,.err{padding:12px 14px; border-radius:10px; display:none; margin-top:4px}
+    .ok{background:var(--ok-bg); border:1px solid var(--ok-bd); color:var(--ok-fg)}
+    .err{background:var(--er-bg); border:1px solid var(--er-bd); color:var(--er-fg)}
+    .divider{height:1px; background:var(--border); margin:16px 0}
+    .center{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    a.button{display:inline-block; text-decoration:none; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--btn); color:var(--fg)}
+    small{font-size:12px; color:var(--muted)}
+    .reveal{cursor:pointer; text-decoration:underline}
   </style>
 </head>
 <body>
   <main class="wrap">
     <h1>Velesari Holdings</h1>
-    <p>Connect with Velesari Holdings without intermediaries.</p>
+    <p>Direct inquiries to our team. We typically respond within 2-3 business days.</p>
 
-    <form id="contact" action="https://formspree.io/f/xdkrwqqr" method="POST">
+    <!-- Client-side only: compose an email in the user's mail app -->
+    <form id="contact" novalidate>
       <div class="row">
-        <input name="name" type="text" placeholder="Your name" autocomplete="name" required>
-        <input name="email" type="email" placeholder="Email" autocomplete="email" required>
+        <div>
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" placeholder="Your name"
+                 autocomplete="name" autocapitalize="words" required>
+        </div>
+        <div>
+          <label for="email">Your email</label>
+          <input id="email" name="email" type="email" placeholder="Email for reply"
+                 autocomplete="email" inputmode="email" required>
+        </div>
       </div>
-      <textarea name="message" placeholder="Your message" required></textarea>
-      <input type="text" name="_gotcha" style="display:none">
-      <button type="submit">Send</button>
-      <div class="ok" id="ok">Thank you, our response will follow shortly.</div>
-      <div class="err" id="err">Something went wrong. Try the email button below.</div>
+
+      <div>
+        <label for="topic">Topic</label>
+        <input id="topic" name="topic" type="text" placeholder="Topic (optional)" autocomplete="on">
+      </div>
+
+      <div>
+        <label for="message">Your message</label>
+        <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
+      </div>
+
+      <!-- light bot friction without third parties -->
+      <input type="text" name="website" id="website" style="display:none" tabindex="-1" autocomplete="off">
+
+      <button type="submit">Compose email</button>
+      <div class="ok" id="ok" role="status" aria-live="polite">Opening your email app. If nothing happens, use the buttons below.</div>
+      <div class="err" id="err" role="alert" aria-live="assertive">Couldn’t compose the email automatically. Use the copy buttons below.</div>
     </form>
 
     <div class="divider"></div>
 
-    <div class="center">
-      <a class="button" href="mailto:you@example.com">Email me</a>
-      <a class="button" href="https://github.com/YOURUSERNAME/YOURUSERNAME.github.io/issues/new?title=Contact&body=Write%20your%20message%20here."
-         rel="noopener">Open a private issue</a>
+    <!-- Universal fallbacks: reveal address, copy helpers, downloadable vCard -->
+    <div class="center" aria-label="Alternate contact options">
+      <a class="button" id="reveal" role="button">Reveal email</a>
+      <a class="button" id="copyEmail" role="button">Copy email</a>
+      <a class="button" id="copyMsg" role="button">Copy message</a>
+      <a class="button" id="vcard" download="Velesari.vcf" href="#">Download vCard</a>
     </div>
 
     <p class="note" style="margin-top:12px">
-      Skip the logins & socials, email us directly.
+      No trackers. No form processors. This page stays on GitHub Pages; your message goes from you to us via email.
     </p>
+
+    <noscript><small>JavaScript enables the “compose email” and “reveal/copy” actions. Without it, email <span>inquiries</span><span>@</span><span>velesari.com</span>.</small></noscript>
   </main>
 
   <script>
+    // --- Config (edit the address only; everything else adapts) ---
+    const ADDR_REVERSED = "moc.iraselve@seiriuqni".split("").reverse().join(""); // "inquiries@velesari.com"
+    const ORG = "Velesari Holdings";
+
+    // Elements
     const form = document.getElementById('contact');
     const ok = document.getElementById('ok');
     const err = document.getElementById('err');
-    form.addEventListener('submit', async (e) => {
+    const revealBtn = document.getElementById('reveal');
+    const copyEmailBtn = document.getElementById('copyEmail');
+    const copyMsgBtn = document.getElementById('copyMsg');
+    const vcardLink = document.getElementById('vcard');
+
+    function getAddr(){ return ADDR_REVERSED; }
+
+    // Build mailto body with light formatting
+    function buildMailto(name, email, topic, message){
+      const subject = encodeURIComponent((topic ? `[Inquiry] ${topic}` : "[Inquiry]") + " — " + ORG);
+      const lines = [
+        message.trim(),
+        "",
+        "—",
+        `From: ${name || "(no name provided)"}`,
+        `Reply-to: ${email || "(not provided)"}`,
+        `Sent: ${new Date().toISOString()}`
+      ];
+      const body = encodeURIComponent(lines.join("\n"));
+      return `mailto:${getAddr()}?subject=${subject}&body=${body}`;
+    }
+
+    // Minimal validation (client-side only)
+    function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || ""); }
+
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const data = new FormData(form);
-      try {
-        const r = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' }});
-        if (r.ok) { ok.style.display='block'; err.style.display='none'; form.reset(); }
-        else { throw new Error('Bad response'); }
-      } catch (_) { err.style.display='block'; ok.style.display='none'; }
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const topic = document.getElementById('topic').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const trap = document.getElementById('website').value;
+
+      if (!name || !validEmail(email) || !message){
+        form.reportValidity?.();
+        err.style.display = 'block'; ok.style.display = 'none';
+        return;
+      }
+      if (trap){ // bot caught
+        err.style.display = 'block'; ok.style.display = 'none';
+        return;
+      }
+
+      const href = buildMailto(name, email, topic, message);
+      // Try to open the user's mail app
+      const a = document.createElement('a');
+      a.href = href;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      ok.style.display = 'block';
+      err.style.display = 'none';
     });
+
+    // Reveal email (prevents trivial scraping while visible to users)
+    revealBtn.addEventListener('click', () => {
+      const address = getAddr();
+      revealBtn.textContent = address;
+      // Turn it into a clickable mailto after reveal
+      revealBtn.setAttribute('href', `mailto:${address}?subject=${encodeURIComponent("[Inquiry] — " + ORG)}`);
+      revealBtn.setAttribute('role', 'link');
+    });
+
+    // Copy helpers
+    async function copy(text){
+      try { await navigator.clipboard.writeText(text); return true; }
+      catch { return false; }
+    }
+
+    copyEmailBtn.addEventListener('click', async () => {
+      const okCopy = await copy(getAddr());
+      copyEmailBtn.textContent = okCopy ? "Copied ✓" : "Copy failed";
+      setTimeout(() => copyEmailBtn.textContent = "Copy email", 1800);
+    });
+
+    copyMsgBtn.addEventListener('click', async () => {
+      const name = (document.getElementById('name').value || "").trim();
+      const email = (document.getElementById('email').value || "").trim();
+      const topic = (document.getElementById('topic').value || "").trim();
+      const message = (document.getElementById('message').value || "").trim();
+      const text = decodeURIComponent(buildMailto(name, email, topic, message).split("body=")[1] || "");
+      const okCopy = await copy(text);
+      copyMsgBtn.textContent = okCopy ? "Copied ✓" : "Copy failed";
+      setTimeout(() => copyMsgBtn.textContent = "Copy message", 1800);
+    });
+
+    // Lightweight vCard (data URL) with no external file
+    const vcard = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `FN:${ORG}`,
+      `ORG:${ORG}`,
+      `EMAIL;TYPE=INTERNET:${getAddr()}`,
+      "END:VCARD"
+    ].join("\n");
+    vcardLink.href = "data:text/vcard;charset=utf-8," + encodeURIComponent(vcard);
   </script>
 </body>
 </html>
